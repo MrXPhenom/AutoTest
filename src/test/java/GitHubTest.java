@@ -1,6 +1,8 @@
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -85,5 +87,22 @@ public class GitHubTest extends BaseTest{
         Assert.assertEquals(expectedNewIssueText, createNewIssue.getNewIssueTitle().getText());
         NewIssueCreated newIssueCreated = new NewIssueCreated(driver);
         Assert.assertEquals(newIssueCreatedText, newIssueCreated.getNewIssueCreatedConfirmation().getText());
+    }
+
+    @DataProvider(name = "dataProvider")
+    public Object[][] searchRequest(){
+        return new Object[][]{
+                {"Test", 2}
+        };
+    }
+
+    @Test(dataProvider = "dataProvider")
+    public void validateSearchResults(String request, Integer number) {
+        HomePage home = new HomePage(driver);
+        home.goToLoginPage().loginSuccessful("alex.meryhold@gmail.com", "alex.meryhold@gmail.com");
+        MainPage mainPage = new MainPage(driver);
+        mainPage.driver.findElement(By.id("dashboard-repos-filter-left")).sendKeys(request + number);
+        String resultOfSearch = driver.findElement(By.xpath("(//li/div/div/a)[1]")).getText();
+        Assert.assertEquals((resultOfSearch), "MrXPhenom1/Test2");
     }
 }
