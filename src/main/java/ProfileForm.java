@@ -1,6 +1,6 @@
-import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
 
 public class ProfileForm extends BasePage{
     By signOutLocator = By.xpath("//span[contains(text(), 'Sign out')]/parent::a");
@@ -13,13 +13,13 @@ public class ProfileForm extends BasePage{
     }
 
     public SignOutPage signOutFromGitHub() {
-        Assertions.assertTrue(driver.findElement(signOutLocator).isDisplayed());
+        Assert.assertTrue(driver.findElement(signOutLocator).isDisplayed());
         driver.findElement(signOutLocator).click();
         return new SignOutPage(driver);
     }
 
     public RepositoriesPage goToRepositoriesPage() {
-        Assertions.assertTrue(driver.findElement(yourRepositButtonLocator).isDisplayed());
+        Assert.assertTrue(driver.findElement(yourRepositButtonLocator).isDisplayed());
         driver.findElement(yourRepositButtonLocator).click();
         return new RepositoriesPage(driver);
     }

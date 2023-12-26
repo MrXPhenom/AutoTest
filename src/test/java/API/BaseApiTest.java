@@ -5,7 +5,7 @@ import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
-import org.junit.jupiter.api.BeforeEach;
+import org.testng.annotations.BeforeMethod;
 
 public class BaseApiTest {
 
@@ -13,7 +13,7 @@ public class BaseApiTest {
     protected ResponseSpecification responseSpecification;
 
 
-    @BeforeEach
+    @BeforeMethod
     public void setSpecs() {
         requestSpecification = new RequestSpecBuilder()
                 .log(LogDetail.ALL)

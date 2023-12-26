@@ -1,9 +1,9 @@
 import API.Address;
 import API.BaseApiTest;
 import io.restassured.http.ContentType;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import java.io.File;
 import java.util.HashMap;
@@ -21,7 +21,7 @@ public class APITest extends BaseApiTest {
     private Map<String, Object> reqBody = new HashMap<>();
 
 
-    @BeforeEach
+    @BeforeMethod
     public void setReqBody() {
         Map<String, Object> methodProperties = new HashMap<>();
 
@@ -36,7 +36,7 @@ public class APITest extends BaseApiTest {
 
     }
 
-@Test
+    @Test
     public void validateThatSuccess() {
         given()
                 .spec(requestSpecification)
@@ -117,6 +117,6 @@ public class APITest extends BaseApiTest {
                 .body().jsonPath().getList("data[0].Addresses", Address.class);
 
         System.out.println(addressesData);
-        addressesData.forEach(el -> Assertions.assertTrue(el.getPresent().contains("Київ")));
+        addressesData.forEach(el -> Assert.assertTrue(el.getPresent().contains("Київ")));
     }
 }
