@@ -1,10 +1,7 @@
-import helpers.Level;
-import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-
-import static helpers.ColorPrinter.printColorMessage;
+import org.testng.Assert;
 
 public class MainPage extends BasePage {
     private By imgLocator = By.xpath("(//img[@class='avatar circle'])[1]");
@@ -25,14 +22,13 @@ public class MainPage extends BasePage {
     }
 
     public ProfileForm goToProfileForm() {
-        printColorMessage(TITLE + " is opened", logger, Level.INFO);
-        Assertions.assertTrue(driver.findElement(imgLocator).isDisplayed());
+        Assert.assertTrue(driver.findElement(imgLocator).isDisplayed());
         driver.findElement(imgLocator).click();
         return new ProfileForm(driver);
     }
 
     public SideMenu goToSideMenu() {
-        Assertions.assertTrue(driver.findElement(menuButton).isDisplayed());
+        Assert.assertTrue(driver.findElement(menuButton).isDisplayed());
         driver.findElement(menuButton).click();
         return new SideMenu(driver);
     }

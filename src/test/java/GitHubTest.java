@@ -1,7 +1,9 @@
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,12 +45,15 @@ public class GitHubTest extends BaseTest{
         MainPage mainPage = new MainPage(driver);
         mainPage.goToProfileForm();
         ProfileForm profileForm = new ProfileForm(driver);
-        Assertions.assertEquals(expectedQuestionText, profileForm.signOutFromGitHub().getQuestionElement().getText());
+        Assert.assertEquals(expectedQuestionText, profileForm.signOutFromGitHub().getQuestionElement().getText());
     }
 
     @Test
     public void checkRepositoriesList() {
         List<String> expReposList = new ArrayList<>();
+        expReposList.add("Dolor");
+        expReposList.add("Ipsum");
+        expReposList.add("Lorem");
         expReposList.add("Test2");
         expReposList.add("Test1");
         expReposList.add("Test");
@@ -58,7 +63,7 @@ public class GitHubTest extends BaseTest{
         MainPage mainPage = new MainPage(driver);
         mainPage.goToProfileForm().goToRepositoriesPage();
         RepositoriesPage repositoriesPage = new RepositoriesPage(driver);
-        Assertions.assertEquals(expReposList, repositoriesPage.getRepositories());
+        Assert.assertEquals(expReposList, repositoriesPage.getRepositories());
         Logger logger = LogManager.getLogger();
         logger.info("checkRepositoriesList passed successfully");
     }
@@ -74,13 +79,30 @@ public class GitHubTest extends BaseTest{
         MainPage mainPage = new MainPage(driver);
         mainPage.goToSideMenu().goToRepositoryTab().goToIssuesTab();
         IssuesTab issuesTab = new IssuesTab(driver);
-        Assertions.assertEquals(expectedIssuesTabText, issuesTab.getIssuesTabName().getText());
+        Assert.assertEquals(expectedIssuesTabText, issuesTab.getIssuesTabName().getText());
         issuesTab.openNewIssue();
         CreateNewIssuePage createNewIssue = new CreateNewIssuePage(driver);
         createNewIssue.createANewIssue("Lorem, ipsum dolor.",
                 "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Officiis, blanditiis.");
-        Assertions.assertEquals(expectedNewIssueText, createNewIssue.getNewIssueTitle().getText());
+        Assert.assertEquals(expectedNewIssueText, createNewIssue.getNewIssueTitle().getText());
         NewIssueCreated newIssueCreated = new NewIssueCreated(driver);
-        Assertions.assertEquals(newIssueCreatedText, newIssueCreated.getNewIssueCreatedConfirmation().getText());
+        Assert.assertEquals(newIssueCreatedText, newIssueCreated.getNewIssueCreatedConfirmation().getText());
+    }
+
+    @DataProvider(name = "dataProvider")
+    public Object[][] searchRequest(){
+        return new Object[][]{
+                {"Test", 2}
+        };
+    }
+
+    @Test(dataProvider = "dataProvider")
+    public void validateSearchResults(String request, Integer number) {
+        HomePage home = new HomePage(driver);
+        home.goToLoginPage().loginSuccessful("alex.meryhold@gmail.com", "alex.meryhold@gmail.com");
+        MainPage mainPage = new MainPage(driver);
+        mainPage.driver.findElement(By.id("dashboard-repos-filter-left")).sendKeys(request + number);
+        String resultOfSearch = driver.findElement(By.xpath("(//li/div/div/a)[1]")).getText();
+        Assert.assertEquals((resultOfSearch), "MrXPhenom1/Test2");
     }
 }

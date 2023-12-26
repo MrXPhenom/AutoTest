@@ -28,7 +28,6 @@ public class CreateNewIssuePage extends BasePage{
         driver.findElement(newIssueTitle).sendKeys(titleIssue);
         driver.findElement(newIssueBody).sendKeys(bodyIssue);
         driver.findElement(submitNewIssueButton).click();
-        printColorMessage("New issue creation", logger, Level.INFO);
         return new CreateNewIssuePage(driver);
     }
 }
